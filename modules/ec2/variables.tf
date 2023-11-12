@@ -6,6 +6,6 @@ variable "instance_type" {
   description = "The type of instance to start"
 }
 
-variable "subnet_1_id" {
+variable "subnet_id" {
   description = "The subnet id of the default vpn"
 }
