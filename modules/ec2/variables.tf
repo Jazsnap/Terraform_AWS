@@ -9,3 +9,12 @@ variable "instance_type" {
 variable "subnet_id" {
   description = "The subnet id of the default vpn"
 }
+
+variable "tags" {
+  description = "A map of tags to add to the resource"
+  type        = map(string)
+  default     = {
+    ManagedBy = "Terraform"
+    Module    = "ec2"
+  }
+}
