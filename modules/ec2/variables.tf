@@ -13,7 +13,7 @@ variable "subnet_id" {
 variable "tags" {
   description = "A map of tags to add to the resource"
   type        = map(string)
-  default     = {
+  default = {
     ManagedBy = "Terraform"
     Module    = "ec2"
   }

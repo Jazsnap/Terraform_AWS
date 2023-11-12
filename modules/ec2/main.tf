@@ -6,7 +6,7 @@ resource "aws_instance" "ec2_vm" {
   tags = merge(
     var.tags,
     {
-      Name = "ec2_vm"  # This is a default tag value
+      Name = "ec2_vm" # This is a default tag value
     }
   )
 }
