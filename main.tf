@@ -55,8 +55,12 @@ module "igw" {
 module "route_table" {
   source              = "./modules/route_table"
   vpc_id              = module.vpc.vpc_id
-  cidr_block          = "0.0.0.0/0"
+  default_route       = "0.0.0.0/0"
   internet_gateway_id = module.igw.internet_gateway_id
+  subnets = {
+    "subnet1" = { id = module.vpc.subnet_1_id }
+    "subnet2" = { id = module.vpc.subnet_2_id }
+  }
 
   tags = merge(
     local.common_tags,
