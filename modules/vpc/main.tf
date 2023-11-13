@@ -13,5 +13,3 @@ resource "aws_subnet" "subnet_2" {
   vpc_id     = aws_vpc.vpc.id
   cidr_block = var.subnet_2_cidr_block
 }
-
-# Additional resources like Internet Gateway, Route Tables, etc.

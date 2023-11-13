@@ -39,3 +39,15 @@ module "ec2_instance_2" {
     }
   )
 }
+
+module "igw" {
+  source = "./modules/internet_gateway"
+  vpc_id = module.vpc.vpc_id
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "igw"
+    }
+  )
+}
