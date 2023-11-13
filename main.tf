@@ -51,3 +51,17 @@ module "igw" {
     }
   )
 }
+
+module "route_table" {
+  source              = "./modules/route_table"
+  vpc_id              = module.vpc.vpc_id
+  cidr_block          = "0.0.0.0/0"
+  internet_gateway_id = module.igw.internet_gateway_id
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "route_table"
+    }
+  )
+}
