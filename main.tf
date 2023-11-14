@@ -16,6 +16,7 @@ module "ec2_instance_1" {
   ami           = "ami-05c13eab67c5d8861" # Amazon Linux 2023 AMI 2023.2.20231030.1 x86_64 HVM kernel-6.1 us-east-1
   instance_type = "t2.micro"              # Free tier
   subnet_id     = module.vpc.subnet_1_id
+  public_ip     = true
 
   tags = merge(
     local.common_tags,
@@ -31,6 +32,7 @@ module "ec2_instance_2" {
   ami           = "ami-05c13eab67c5d8861" # Amazon Linux 2023 AMI 2023.2.20231030.1 x86_64 HVM kernel-6.1 us-east-1
   instance_type = "t2.micro"              # Free tier
   subnet_id     = module.vpc.subnet_2_id
+  public_ip     = false
 
   tags = merge(
     local.common_tags,
