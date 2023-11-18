@@ -23,5 +23,16 @@ resource "aws_security_group" "dynamic_sg" {
       description = ingress.value.description
     }
   }
-  // Define any egress rules or other configurations as needed
+
+  dynamic "egress" {
+    for_each = var.egress_rules
+
+    content {
+      from_port   = egress.value.from_port
+      to_port     = egress.value.to_port
+      protocol    = egress.value.protocol
+      cidr_blocks = egress.value.cidr_blocks
+      description = egress.value.description
+    }
+  }
 }
