@@ -79,7 +79,15 @@ module "route_table" {
 module "security_group" {
   source        = "./modules/security_group"
   vpc_id        = module.vpc.vpc_id
-  ingress_rules = []
+  ingress_rules = [
+    {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+      description = "HTTP"
+    },
+    ]
   // Additional rules...
 }
 
