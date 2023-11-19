@@ -7,7 +7,7 @@ variable "instance_type" {
 }
 
 variable "subnet_id" {
-  description = "The subnet id of the default vpn"
+  description = "The subnet id"
 }
 
 variable "public_ip" {

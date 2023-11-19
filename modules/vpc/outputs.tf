@@ -1,11 +1,7 @@
-output "subnet_1_id" {
-  value = aws_subnet.subnet_1.id
-}
-
-output "subnet_2_id" {
-  value = aws_subnet.subnet_2.id
-}
-
 output "vpc_id" {
   value = aws_vpc.vpc.id
+}
+
+output "subnet_ids" {
+  value = [for s in aws_subnet.subnets : s.id]
 }

@@ -4,12 +4,9 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = false # default is false
 }
 
-resource "aws_subnet" "subnet_1" {
+resource "aws_subnet" "subnets" {
   vpc_id     = aws_vpc.vpc.id
-  cidr_block = var.subnet_1_cidr_block
-}
-
-resource "aws_subnet" "subnet_2" {
-  vpc_id     = aws_vpc.vpc.id
-  cidr_block = var.subnet_2_cidr_block
+  for_each   = toset(var.subnets)
+  cidr_block = each.value
+  // ... other configurations ...
 }
