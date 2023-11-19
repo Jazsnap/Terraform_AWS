@@ -3,6 +3,8 @@ variable "cidr_block" {
 }
 
 variable "subnets" {
-  description = "A list of subnet CIDR blocks"
-  type        = list(string)
+  description = "Map of subnets"
+  type = map(object({
+    cidr_block = string
+  }))
 }

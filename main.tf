@@ -6,15 +6,28 @@ module "vpc" {
   source = "./modules/vpc"
 
   cidr_block = "10.0.0.0/16"
-  subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  subnets = {
+    "subnet1" = {
+      cidr_block = "10.0.1.0/24",
+      Name       = "subnet1"
+    },
+    "subnet2" = {
+      cidr_block = "10.0.2.0/24",
+      Name       = "subnet2"
+    },
+    "subnet3" = {
+      cidr_block = "10.0.3.0/24",
+      Name       = "subnet3"
+    }
+  }
 }
 
 module "ec2_instance_1" {
   source = "./modules/ec2"
 
-  ami           = "ami-05c13eab67c5d8861" # Amazon Linux 2023 AMI 2023.2.20231030.1 x86_64 HVM kernel-6.1 us-east-1
-  instance_type = "t2.micro"              # Free tier
-  subnet_id     = module.vpc.subnet_ids[0]
+  ami             = "ami-05c13eab67c5d8861" # Amazon Linux 2023 AMI 2023.2.20231030.1 x86_64 HVM kernel-6.1 us-east-1
+  instance_type   = "t2.micro"              # Free tier
+  subnet_id       = module.vpc.subnet_ids["subnet1"].id
   public_ip       = true
   security_groups = module.security_group.aws_security_group_id
   key_name        = module.key_pair.key_name
@@ -30,9 +43,9 @@ module "ec2_instance_1" {
 module "ec2_instance_2" {
   source = "./modules/ec2"
 
-  ami           = "ami-05c13eab67c5d8861" # Amazon Linux 2023 AMI 2023.2.20231030.1 x86_64 HVM kernel-6.1 us-east-1
-  instance_type = "t2.micro"              # Free tier
-  subnet_id     = module.vpc.subnet_ids[1]
+  ami             = "ami-05c13eab67c5d8861" # Amazon Linux 2023 AMI 2023.2.20231030.1 x86_64 HVM kernel-6.1 us-east-1
+  instance_type   = "t2.micro"              # Free tier
+  subnet_id       = module.vpc.subnet_ids["subnet2"].id
   public_ip       = false
   security_groups = module.security_group.aws_security_group_id
   key_name        = module.key_pair.key_name
@@ -62,7 +75,7 @@ module "route_table" {
   vpc_id              = module.vpc.vpc_id
   default_route       = "0.0.0.0/0"
   internet_gateway_id = module.igw.internet_gateway_id
-  subnets = { for idx, subnet_id in module.vpc.subnet_ids : "subnet-${idx}" => { id = subnet_id } }
+  subnets             = module.vpc.subnet_ids
 
   tags = merge(
     local.common_tags,

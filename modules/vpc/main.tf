@@ -6,7 +6,7 @@ resource "aws_vpc" "vpc" {
 
 resource "aws_subnet" "subnets" {
   vpc_id     = aws_vpc.vpc.id
-  for_each   = toset(var.subnets)
-  cidr_block = each.value
+  for_each   = var.subnets
+  cidr_block = each.value.cidr_block
   // ... other configurations ...
 }
