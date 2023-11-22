@@ -12,20 +12,6 @@ module "vpc" {
                   Name       = "subnet${idx + 1}"
                 }
   }
-  # subnets = {
-  #   "subnet1" = {
-  #     cidr_block = "10.0.1.0/24",
-  #     Name       = "subnet1"
-  #   },
-  #   "subnet2" = {
-  #     cidr_block = "10.0.2.0/24",
-  #     Name       = "subnet2"
-  #   },
-  #   "subnet3" = {
-  #     cidr_block = "10.0.3.0/24",
-  #     Name       = "subnet3"
-  #   }
-  # }
 }
 
 module "ec2_instance_1" {
