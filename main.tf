@@ -6,11 +6,11 @@ module "vpc" {
   source = "./modules/vpc"
 
   cidr_block = "10.0.0.0/16"
-  subnets = { for idx in range (local.number_of_subnets) :
-                "subnet${idx + 1}" => {
-                  cidr_block = "10.0.${idx + 1}.0/24",
-                  Name       = "subnet${idx + 1}"
-                }
+  subnets = { for idx in range(local.number_of_subnets) :
+    "subnet${idx + 1}" => {
+      cidr_block = "10.0.${idx + 1}.0/24",
+      Name       = "subnet${idx + 1}"
+    }
   }
 }
 
@@ -78,27 +78,10 @@ module "route_table" {
 }
 
 module "security_group" {
-  source = "./modules/security_group"
-  vpc_id = module.vpc.vpc_id
-  ingress_rules = [
-    {
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-      description = "HTTP"
-    },
-  ]
-  egress_rules = [
-    {
-      from_port   = 0
-      to_port     = 0
-      protocol    = -1
-      cidr_blocks = ["0.0.0.0/0"]
-      description = "Allow all"
-    }
-  ]
-  // Additional rules...
+  source        = "./modules/security_group"
+  vpc_id        = module.vpc.vpc_id
+  ingress_rules = local.ingress_rules
+  egress_rules  = local.egress_rules
 }
 
 module "key_pair" {

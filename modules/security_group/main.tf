@@ -8,7 +8,7 @@ resource "aws_security_group" "dynamic_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["62.167.161.52/32"]
+    cidr_blocks = ["51.154.255.64/32"]
     description = "SSH"
   }
 
