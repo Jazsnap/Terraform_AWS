@@ -8,8 +8,24 @@ resource "aws_security_group" "dynamic_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["62.167.161.52/32"]
+    cidr_blocks = ["51.154.252.132/32"]
     description = "SSH"
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    self        = true
+    description = "SSH within group"
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "SSH within group"
   }
 
   dynamic "ingress" {

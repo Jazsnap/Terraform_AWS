@@ -6,11 +6,11 @@ module "vpc" {
   source = "./modules/vpc"
 
   cidr_block = "10.0.0.0/16"
-  subnets = { for idx in range (local.number_of_subnets) :
-                "subnet${idx + 1}" => {
-                  cidr_block = "10.0.${idx + 1}.0/24",
-                  Name       = "subnet${idx + 1}"
-                }
+  subnets = { for idx in range(local.number_of_subnets) :
+    "subnet${idx + 1}" => {
+      cidr_block = "10.0.${idx + 1}.0/24",
+      Name       = "subnet${idx + 1}"
+    }
   }
 }
 
@@ -78,30 +78,14 @@ module "route_table" {
 }
 
 module "security_group" {
-  source = "./modules/security_group"
-  vpc_id = module.vpc.vpc_id
-  ingress_rules = [
-    {
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-      description = "HTTP"
-    },
-  ]
-  egress_rules = [
-    {
-      from_port   = 0
-      to_port     = 0
-      protocol    = -1
-      cidr_blocks = ["0.0.0.0/0"]
-      description = "Allow all"
-    }
-  ]
-  // Additional rules...
+  source        = "./modules/security_group"
+  vpc_id        = module.vpc.vpc_id
+  ingress_rules = local.ingress_rules
+  egress_rules  = local.egress_rules
 }
 
 module "key_pair" {
   source     = "./modules/key_pair"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDI0KRlfgJ7D210O3svEn5wUj0HXp2EK6Sw2TPBvZelcOvs8TQYW0pN79A7u6OI2qYX8IWrmBk46GNjrvKUHYtPRHru38anGwyKCP0L5iYdMDnr2bQ69jE14qf9Aanlr8mhJuYSRHy05pNnrMVkqSOu3aHJU+f9jI2a2UjaxwMMDru99pE+ve9zS9T98U3AZWDKS3HkOg16juk5o7bXMBjjgI0mWxQWpenhO109vsRjB6HrW3+akycHMrfIY+1SP4mB0I//93wKADSwDf6dZk0mHH/dK7bR5moeledxVe0ppbqrmHiJ9IE/qWxXsWWbkLFn5zL5bIMb4bWMG1/d8pg11LzQ0vOsdRMtMbo1dZMXDfDTUEAFVFkW7Qv5W9nA3kJdrVmfkansRaWmLBt3C07iZyrxyRAZDHFjZ//eFpImeG9Yl35hxYglqUHDfx/sAqeajgXyGasumWeHiZrvWZif5AcAtuW5IOalvXrr3bJQgKhnzojHuB9h0Mn7T/NyUfR4s6OZu/3E02URg2OIoCGjEtoNawMh6TVORG2nu8lurOiGeHZ2QOYAtUQETnkeu6z+R+Ha5FvVgbIt1ShViD5U00YrfRIL8XfSV6k+wDKjmfyZ9syHX5Yh+vJ6p5QtY86U1NM7TlcJQnBX7l4sEP1Mk5dt/ovB1Yuyd4i08/EceQ=="
+  public_key = file("~/.ssh/id_rsa.pub")
+  # public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDI0KRlfgJ7D210O3svEn5wUj0HXp2EK6Sw2TPBvZelcOvs8TQYW0pN79A7u6OI2qYX8IWrmBk46GNjrvKUHYtPRHru38anGwyKCP0L5iYdMDnr2bQ69jE14qf9Aanlr8mhJuYSRHy05pNnrMVkqSOu3aHJU+f9jI2a2UjaxwMMDru99pE+ve9zS9T98U3AZWDKS3HkOg16juk5o7bXMBjjgI0mWxQWpenhO109vsRjB6HrW3+akycHMrfIY+1SP4mB0I//93wKADSwDf6dZk0mHH/dK7bR5moeledxVe0ppbqrmHiJ9IE/qWxXsWWbkLFn5zL5bIMb4bWMG1/d8pg11LzQ0vOsdRMtMbo1dZMXDfDTUEAFVFkW7Qv5W9nA3kJdrVmfkansRaWmLBt3C07iZyrxyRAZDHFjZ//eFpImeG9Yl35hxYglqUHDfx/sAqeajgXyGasumWeHiZrvWZif5AcAtuW5IOalvXrr3bJQgKhnzojHuB9h0Mn7T/NyUfR4s6OZu/3E02URg2OIoCGjEtoNawMh6TVORG2nu8lurOiGeHZ2QOYAtUQETnkeu6z+R+Ha5FvVgbIt1ShViD5U00YrfRIL8XfSV6k+wDKjmfyZ9syHX5Yh+vJ6p5QtY86U1NM7TlcJQnBX7l4sEP1Mk5dt/ovB1Yuyd4i08/EceQ=="
 }
